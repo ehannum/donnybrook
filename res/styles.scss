@@ -1,4 +1,103 @@
+@mixin imageFill {
+  @media screen and (orientation:portrait) {
+    height: 100%;
+  }
+  @media screen and (orientation:landscape) {
+    width: 100%;
+  }
+}
+
 html, body {
   margin: 0;
   padding: 0;
+}
+
+* { // Just makes everything work better
+  box-sizing: border-box;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: #333;
+  color: #FFF;
+  padding: 5px;
+
+  .title {
+    margin: 0;
+    padding: 0;
+    line-height: 30px;
+    float: left;
+  }
+
+  .menu {
+    float: right;
+  }
+}
+
+.parallax {
+  perspective: 1px;
+  height: 100vh;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+
+  * {
+    transform-style: preserve-3d;
+  }
+
+  .cabin-container {
+    text-align: center;
+    position: relative;
+    height: 100vh;
+    font-family: "Open Sans Condensed", Futura, sans-serif;
+    z-index: -1;
+
+    .cabin {
+      transform: translateZ(-1px) scale(2);
+      position: absolute;
+      top: 0;
+      left: 0;
+      @include imageFill;
+    }
+
+    .cabin-body {
+      position: absolute;
+      top: 30%;
+      color: #FFF;
+      width: 100%;
+
+      font-size: 2rem;
+      text-shadow: 3px 3px #000;
+
+      * {
+        margin: 0;
+      }
+
+      button {
+        margin: 10px;
+        font-size: 32px;
+      }
+    }
+  }
+
+  .calendar-container {
+    padding: 50px 0;
+    text-align: center;
+    background-color: #FFF;
+    height: 100vh;
+    z-index: 1;
+
+    iframe {
+      width: 90%;
+      height: 100%;
+
+      @media screen and (max-width: 800px) {
+        width: 100%;
+      }
+    }
+  }
 }
