@@ -14,16 +14,36 @@
       <div class="cabin-body">
         <h1>DonnyBook</h1>
         <h4>A website for the cabin.</h4><br />
-        <button class="schedule-trip">
-          Schedule a trip
-        </button>
         <button class="see-calendar" href="#calendar">
           See the calender
+        </button>
+        <button class="schedule-trip" href="#trip">
+          Schedule a trip
         </button>
       </div>
     </div>
     <div class="calendar-container" id="calendar">
       <iframe src="https://calendar.google.com/calendar/embed?showCalendars=0&showPrint=0&height=999&wkst=1&bgcolor=%23ffffff&src=lp2qc5iadu655k6134qijpmou8%40group.calendar.google.com&color=%23060D5E&src=en.usa%23holiday%40group.v.calendar.google.com&color=%235C1158&ctz=America%2FLos_Angeles" style="border-width:0" frameborder="0" scrolling="no"></iframe>
+    </div>
+    <div class="trip-container" id="trip">
+      <div class="new-trip">
+        <h1>Schedule a trip:</h1>
+        <form>
+          <h4>Start Date:</h4>
+          <input type="date" class="start-date" required><br />
+          <h4>End Date:</h4>
+          <input type="date" class="end-date" required><br />
+          <h4>Your Name:</h4>
+          <input type="text" class="name" required><br />
+          <h4>Comment:</h4>
+          <input type="text" class="comment" placeholder="(optional)"><br />
+          <h4>&nbsp;</h4>
+          <input type="submit" value="Submit" class="submit-trip">
+        </form>
+      </div>
+      <div class="messages">
+
+      </div>
     </div>
   </div>
   <header>
