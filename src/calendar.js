@@ -1,4 +1,8 @@
 $(function () {
+  $('#calendar').clndr({
+    template: $('#clndr-temp').html()
+  });
+
   $('button[href]').click(function () {
     target = $(this.getAttribute('href'));
     $('.parallax').animate({

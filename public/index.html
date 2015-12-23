@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="calendar-container" id="calendar">
-      <iframe src="https://calendar.google.com/calendar/embed?showCalendars=0&showPrint=0&height=999&wkst=1&bgcolor=%23ffffff&src=lp2qc5iadu655k6134qijpmou8%40group.calendar.google.com&color=%23060D5E&src=en.usa%23holiday%40group.v.calendar.google.com&color=%235C1158&ctz=America%2FLos_Angeles" style="border-width:0" frameborder="0" scrolling="no"></iframe>
+      <!-- calendar inserted here by clndr.js -->
     </div>
     <div class="trip-container" id="trip">
       <div class="new-trip">
@@ -50,6 +50,30 @@
     <h1 class="title">DonnyBook</h1>
     <button class="menu">MENU</button>
   </header>
+  <!-- clndr template start -->
+  <script id="clndr-temp" type="text/template">
+    <div class="clndr-controls">
+      <div class="clndr-previous-button">&lsaquo;</div>
+      <div class="month"><%= month %> <%= year %></div>
+      <div class="clndr-next-button">&rsaquo;</div>
+    </div>
+    <div class="clndr-grid">
+      <div class="days-of-the-week">
+      <% _.each(daysOfTheWeek, function (day) { %>
+        <div class="header-day"><%= day %></div>
+      <% }); %>
+        <div class="days">
+        <% _.each(days, function (day) { %>
+          <div class="day"><%= day.day %></div>
+        <% }); %>
+        </div>
+      </div>
+    </div>
+  </script>
+  <!-- clndr template end -->
 </body>
+<script src="src/lodash.min.js"></script>
+<script src="src/moment.min.js"></script>
+<script src="src/clndr.min.js"></script>
 <script src="src/build.js"></script>
 </html>
