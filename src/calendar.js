@@ -64,7 +64,8 @@ $(function () {
         comment: comment
       },
       success: function (data) {
-        console.log(data);
+        alert('You are now booked for the cabin from ' + moment(startDate).format('dddd, MMMM DD YYYY') + ' to ' + moment(endDate).format('dddd, MMMM DD YYYY') + '!');
+        createTrip(startDate, endDate, name, comment);
       }
     });
   });
