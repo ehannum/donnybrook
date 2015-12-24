@@ -159,6 +159,7 @@ header {
         width: 14%;
 
         border: 1px solid #000;
+        font-family: "Open Sans Condensed", Futura, sans-serif;
 
         h4 {
           font-size: 24px;
@@ -170,8 +171,32 @@ header {
         color: #666;
       }
 
-      .event {
+      .blue {
+        background-color: #CCF;
+      }
+
+      .purple {
+        background-color: #FCF;
+      }
+
+      .pink {
+        background-color: #FCC;
+      }
+
+      .orange {
         background-color: #FDB;
+      }
+
+      .yellow {
+        background-color: #FFC;
+      }
+
+      .green {
+        background-color: #CEC;
+      }
+
+      .today {
+        text-decoration: underline;
       }
     }
   }
