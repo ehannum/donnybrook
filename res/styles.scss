@@ -27,7 +27,7 @@ html, body {
 
 h1, h2, h3, h4 {
   font-family: "Open Sans Condensed", Futura, sans-serif;
-  margin-top: 0;
+  margin: 0;
 }
 
 header {
@@ -105,13 +105,60 @@ header {
     background-color: #FFF;
     height: 100vh;
     z-index: 1;
+    text-align: center;
 
-    iframe {
-      width: 90%;
+    .clndr {
+      margin: 0 5%;
       height: 100%;
+      padding-bottom: 10%;
 
       @media screen and (max-width: 800px) {
-        width: 100%;
+        margin: 0;
+      }
+    }
+
+    .clndr-controls {
+      display: flex;
+      font-size: 32px;
+
+      * {
+        cursor: pointer;
+        flex-grow: 1;
+      }
+    }
+
+    .clndr-grid {
+      height: 90%;
+    }
+
+    .days-of-the-week {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+
+      .header-day {
+        flex-grow: 1;
+        width: 14%;
+        height: auto;
+
+        h4 {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .days {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      height: 100%;
+      border: 1px solid #000;
+
+      .day {
+        flex-grow: 1;
+        width: 14%;
+
+        border: 1px solid #000;
       }
     }
   }

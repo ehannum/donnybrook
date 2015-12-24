@@ -1,6 +1,7 @@
 $(function () {
   $('#calendar').clndr({
-    template: $('#clndr-temp').html()
+    template: $('#clndr-temp').html(),
+    daysOfTheWeek: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
   });
 
   $('button[href]').click(function () {
@@ -17,6 +18,12 @@ $(function () {
     var endDate = $('.end-date').val();
     var name = $('.name').val();
     var comment = $('.comment').val();
+
+    $('.start-date').val('');
+    $('.end-date').val('');
+    $('.name').val('');
+    $('.comment').val('');
+
     $.ajax({
       method: 'POST',
       url: '/calendar',

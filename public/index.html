@@ -53,20 +53,20 @@
   <!-- clndr template start -->
   <script id="clndr-temp" type="text/template">
     <div class="clndr-controls">
-      <div class="clndr-previous-button">&lsaquo;</div>
-      <div class="month"><%= month %> <%= year %></div>
-      <div class="clndr-next-button">&rsaquo;</div>
+      <div class="clndr-previous-button"><h2>&lsaquo;</h2></div>
+      <div class="month"><h2><%= month %> <%= year %></h2></div>
+      <div class="clndr-next-button"><h2>&rsaquo;</h2></div>
     </div>
     <div class="clndr-grid">
       <div class="days-of-the-week">
       <% _.each(daysOfTheWeek, function (day) { %>
-        <div class="header-day"><%= day %></div>
+        <div class="header-day"><h4><%= day %></h4></div>
       <% }); %>
-        <div class="days">
-        <% _.each(days, function (day) { %>
-          <div class="day"><%= day.day %></div>
-        <% }); %>
-        </div>
+      </div>
+      <div class="days">
+      <% _.each(days, function (day) { %>
+        <div class="day"><h4><%= day.day %></h4></div>
+      <% }); %>
       </div>
     </div>
   </script>
