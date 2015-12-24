@@ -3,3 +3,4 @@ public/src/build.js
 public/res/*.css
 public/res/*.map
 .sass-cache/
+.env

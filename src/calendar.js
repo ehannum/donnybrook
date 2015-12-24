@@ -12,17 +12,23 @@ $(function () {
   });
 
   $('.new-trip').submit(function (evt) {
+    evt.preventDefault();
     var startDate = $('.start-date').val();
     var endDate = $('.end-date').val();
     var name = $('.name').val();
     var comment = $('.comment').val();
-    $.http({
+    $.ajax({
       method: 'POST',
       url: '/calendar',
       data: {
-
+        startDate: startDate,
+        endDate: endDate,
+        name: name,
+        comment: comment
+      },
+      success: function (data) {
+        console.log(data);
       }
     });
-    evt.preventDefault();
   });
 });
