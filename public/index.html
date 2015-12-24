@@ -65,7 +65,7 @@
       </div>
       <div class="days">
       <% _.each(days, function (day) { %>
-        <div class="day"><h4><%= day.day %></h4></div>
+        <div class="<%= day.classes %>"><h4><%= day.day %></h4></div>
       <% }); %>
       </div>
     </div>

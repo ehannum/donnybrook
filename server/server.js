@@ -39,7 +39,28 @@ app.post('/calendar', function (req, res) {
       res.send(data);
     },
     error: function (data, error) {
-      console.log('ERROR: ' + error.message);
+      console.log('ERROR: ' + error.code + ' ' + error.message);
+    }
+  });
+});
+
+// -- FETCH CALENDAR EVENTS
+
+app.get('/events', function (req, res) {
+  if (!auth) {
+    res.send('Error: Parse authentication failed');
+    return;
+  }
+
+  var Trip = Parse.Object.extend('Trips');
+  var trips = new Parse.Query(Trip);
+
+  trips.find({
+    success: function (data) {
+      res.send(data);
+    },
+    error: function (data, error) {
+      console.log('ERROR: ' + error.code + ' ' + error.message);
     }
   });
 });
