@@ -67,7 +67,9 @@
       <% _.each(days, function (day) { %>
         <div class="<%= day.classes %> <%= day.events.length ? day.events[0].color : '' %>">
           <h4><%= day.day %></h4>
-          <p><%= day.events.length ? day.events[0].name : '&nbsp;' %></p>
+          <p><% _.each(day.events, function (evt) { %>
+            <%= evt.name %><br />
+          <% }); %></p>
         </div>
       <% }); %>
       </div>
