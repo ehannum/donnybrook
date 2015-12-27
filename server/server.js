@@ -94,6 +94,29 @@ app.post('/messages', function (req, res) {
   });
 });
 
+// -- FETCH BULLETIN BOARD MESSAGES
+
+app.get('/messages', function (req, res) {
+  if (!auth) {
+    console.log('Error: Parse authentication failed');
+    res.send('Error: Parse authentication failed');
+    return;
+  }
+
+  var Post = Parse.Object.extend('Posts');
+  var posts = new Parse.Query(Post);
+
+  posts.find({
+    success: function (data) {
+      res.send(data);
+    },
+    error: function (data, error) {
+      console.log('ERROR: ' + error.code + ' ' + error.message);
+      res.send('ERROR: ' + error.code + ' ' + error.message);
+    }
+  });
+});
+
 // -- START SERVER
 
 var port = process.env.PORT || 3033;

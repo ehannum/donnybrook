@@ -23,9 +23,16 @@ $(function () {
   var thisMonth = moment.months((new Date()).getMonth());
 
   $.get('/events', function (data) {
-    console.log(data);
     for (var i = 0; i < data.length; i++) {
       createTrip(data[i].startDate.iso, data[i].endDate.iso, data[i].name, data[i].comment);
+    }
+  });
+
+  $.get('/messages', function (data) {
+    for (var i = 0; i < data.length; i++) {
+      var postTime = moment(new Date(data[i].createdAt)).format('MM/DD/YY');
+      var mess = $('.messages').prepend('<h4>').find('h4')[0];
+      $(mess).text(postTime + ' - ' + data[i].message);
     }
   });
 
@@ -93,7 +100,9 @@ $(function () {
         message: message
       },
       success: function (data) {
-        console.log(data);
+        var postTime = moment(new Date(data.createdAt)).format('MM/DD/YY');
+        var mess = $('.messages').prepend('<h4>').find('h4')[0];
+        $(mess).text(postTime + ' - ' + unescape(data.message));
       },
       error: function (error) {
         console.log(error);
