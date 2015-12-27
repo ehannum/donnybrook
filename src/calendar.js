@@ -76,4 +76,22 @@ $(function () {
       }
     });
   });
+
+  $('.new-message').submit(function (evt) {
+    evt.preventDefault();
+    var message = $('.message-input').val();
+
+    $('.message-input').val('');
+
+    $.ajax({
+      method: 'POST',
+      url: '/messages',
+      data: {
+        message: message
+      },
+      success: function (data) {
+        console.log(data);
+      }
+    });
+  });
 });

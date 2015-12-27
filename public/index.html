@@ -26,26 +26,29 @@
       <!-- calendar inserted here by clndr.js -->
     </div>
     <div class="trip-container para-box" id="trip">
-      <div class="new-trip">
-        <h1>Schedule a trip:</h1>
-        <form>
-          <h4>Start Date:</h4>
-          <input type="date" class="start-date" required><br />
-          <h4>End Date:</h4>
-          <input type="date" class="end-date" required><br />
-          <h4>Your Name:</h4>
-          <input type="text" class="name" required><br />
-          <h4>Comment:</h4>
-          <input type="text" class="comment" placeholder="(optional)"><br />
-          <h4>&nbsp;</h4>
-          <input type="submit" value="Submit" class="submit-trip">
-        </form>
-      </div>
+      <h1>Schedule a trip:</h1>
+      <form>
+        <h4>Start Date:</h4>
+        <input type="date" class="start-date" required><br />
+        <h4>End Date:</h4>
+        <input type="date" class="end-date" required><br />
+        <h4>Your Name:</h4>
+        <input type="text" class="name" required><br />
+        <h4>Comment:</h4>
+        <input type="text" class="comment" placeholder="(optional)"><br />
+        <h4>&nbsp;</h4>
+        <input type="submit" value="Submit" class="submit-trip">
+      </form>
     </div>
     <div class="messages-container para-box">
+      <h1>Recent Messages:</h1>
       <div class="messages">
-
+        <!-- append messages here -->
       </div>
+      <form class="new-message">
+        <input type="text" class="message-input">
+        <input type="submit" value="Send" class="message-send">
+      </form>
     </div>
   </div>
   <header>

@@ -49,6 +49,8 @@ header {
 
   .menu {
     float: right;
+    font-size: 24px;
+    margin: 3px;
   }
 }
 
@@ -234,6 +236,7 @@ header {
       font-size: 24px;
       width: 60%;
       margin: 10px 0;
+      border: 2px solid black;
     }
 
     .submit-trip {
@@ -270,17 +273,25 @@ header {
   .messages-container {
     height: 100vh;
     background-color: #CDF;
-    padding: 50px;
+    padding: 25px;
     padding-top: $header-height + 50px;
     font-size: 1.4rem;
 
     float: left;
     width: 50%;
+    display: flex;
+    flex-direction: column;
 
     .messages {
+      flex-grow: 1;
       background-color: #FFF;
-      width: 100%;
-      height: 100%;
+      margin: 5px;
+      padding: 20px;
+      border: 2px solid black;
+
+      .message {
+
+      }
     }
 
     @media screen and (max-width: 800px) {
@@ -288,6 +299,21 @@ header {
       padding-top: $header-height;
       float: none;
       width: 100%;
+    }
+
+    .new-message {
+      display: flex;
+
+      input {
+        display: inline-block;
+        margin: 5px;
+        font-size: 24px;
+      }
+
+      .message-input {
+        flex-grow: 1;
+        border: 2px solid black;
+      }
     }
   }
 }
