@@ -73,6 +73,9 @@ $(function () {
       success: function (data) {
         alert('You are now booked for the cabin from ' + moment(startDate).format('dddd, MMMM DD YYYY') + ' to ' + moment(endDate).format('dddd, MMMM DD YYYY') + '!');
         createTrip(startDate, endDate, name, comment);
+      },
+      error: function (error) {
+        console.log(error);
       }
     });
   });
@@ -91,6 +94,9 @@ $(function () {
       },
       success: function (data) {
         console.log(data);
+      },
+      error: function (error) {
+        console.log(error);
       }
     });
   });

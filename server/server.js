@@ -22,6 +22,7 @@ if (auth) {
 
 app.post('/calendar', function (req, res) {
   if (!auth) {
+    console.log('Error: Parse authentication failed');
     res.send('Error: Parse authentication failed');
     return;
   }
@@ -40,6 +41,7 @@ app.post('/calendar', function (req, res) {
     },
     error: function (data, error) {
       console.log('ERROR: ' + error.code + ' ' + error.message);
+      res.send('ERROR: ' + error.code + ' ' + error.message);
     }
   });
 });
@@ -48,6 +50,7 @@ app.post('/calendar', function (req, res) {
 
 app.get('/events', function (req, res) {
   if (!auth) {
+    console.log('Error: Parse authentication failed');
     res.send('Error: Parse authentication failed');
     return;
   }
@@ -61,6 +64,32 @@ app.get('/events', function (req, res) {
     },
     error: function (data, error) {
       console.log('ERROR: ' + error.code + ' ' + error.message);
+      res.send('ERROR: ' + error.code + ' ' + error.message);
+    }
+  });
+});
+
+// -- POST TO BULLETIN BOARD
+
+app.post('/messages', function (req, res) {
+  if (!auth) {
+    console.log('Error: Parse authentication failed');
+    res.send('Error: Parse authentication failed');
+    return;
+  }
+
+  var Post = Parse.Object.extend('Posts');
+  var post = new Post();
+
+  post.set('message', req.body.message);
+
+  post.save(null, {
+    success: function (data) {
+      res.send(data);
+    },
+    error: function (data, error) {
+      console.log('ERROR: ' + error.code + ' ' + error.message);
+      res.send('ERROR: ' + error.code + ' ' + error.message);
     }
   });
 });
