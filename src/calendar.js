@@ -1,4 +1,11 @@
 $(function () {
+  // replace "100vh" attributes with actual heights of elements
+  // prevents the site from breaking if viewport changes
+  // due to rotation or the keyboard opening.
+  $('.para-box').each(function (index, element) {
+    $(this).css('height', window.innerHeight + 'px');
+  });
+
   var calendar = $('#calendar').clndr({
     template: $('#clndr-temp').html(),
     daysOfTheWeek: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']

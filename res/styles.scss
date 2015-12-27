@@ -21,7 +21,7 @@ html, body {
   padding: 0;
 }
 
-* { // Just makes everything work better
+* { // Just makes everything so much easier
   box-sizing: border-box;
 }
 
@@ -75,6 +75,10 @@ header {
       top: 0;
       left: 0;
       @include imageFill;
+
+      @media screen and (max-width: 800px) {
+        transform: translate(-25%);
+      }
     }
 
     .cabin-body {
@@ -216,48 +220,32 @@ header {
     padding-top: $header-height + 50px;
     font-size: 1.4rem;
 
-    .messages {
-      float: left;
-      width: 50%;
-      height: 100%;
-      background-color: #FFF;
+    float: right;
+    width: 50%;
+
+    h4 {
+      margin: 0;
+      display: inline-block;
+      width: 30%;
     }
 
-    .new-trip {
-      float: right;
-      width: 50%;
-      height: 100%;
-      padding: 50px;
+    input {
+      display: inline-block;
+      font-size: 24px;
+      width: 60%;
+      margin: 10px 0;
+    }
 
-      h4 {
-        margin: 0;
-        display: inline-block;
-        width: 30%;
-      }
-
-      input {
-        display: inline-block;
-        font-size: 24px;
-        width: 60%;
-        margin: 10px 0;
-      }
-
-      .submit-trip {
-        font-size: 24px;
-        border: 0;
-      }
+    .submit-trip {
+      font-size: 24px;
+      border: 0;
     }
 
     @media screen and (max-width: 800px) {
       padding: 0;
       padding-top: $header-height;
-      height: 200vh;
-
-      .messages {
-        float: none;
-        height: 50%;
-        width: 100%;
-      }
+      float: none;
+      width: 100%;
 
       .new-trip {
         float: none;
@@ -276,6 +264,30 @@ header {
           margin: 2px 0;
         }
       }
+    }
+  }
+
+  .messages-container {
+    height: 100vh;
+    background-color: #CDF;
+    padding: 50px;
+    padding-top: $header-height + 50px;
+    font-size: 1.4rem;
+
+    float: left;
+    width: 50%;
+
+    .messages {
+      background-color: #FFF;
+      width: 100%;
+      height: 100%;
+    }
+
+    @media screen and (max-width: 800px) {
+      padding: 0;
+      padding-top: $header-height;
+      float: none;
+      width: 100%;
     }
   }
 }
