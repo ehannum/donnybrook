@@ -14,6 +14,11 @@ button, input[type="submit"] {
   border-radius: 5px;
   background-color: #09C;
   color: #FFF;
+  box-shadow: #333 3px 3px;
+
+  &:active {
+    box-shadow: none;
+  }
 }
 
 html, body {
@@ -96,10 +101,27 @@ header {
         margin: 0;
       }
 
+      h4 {
+        margin-bottom: 20px;
+      }
+
       button {
         margin: 10px;
         font-size: 32px;
         border: 0;
+
+        &.bulletin-board {
+          display: none;
+        }
+
+        @media screen and (max-width: 800px) {
+          display: block;
+          margin: 10px auto;
+
+          &.bulletin-board {
+            display: block;
+          }
+        }
       }
     }
   }
@@ -235,7 +257,7 @@ header {
       display: inline-block;
       font-size: 24px;
       width: 60%;
-      margin: 10px 0;
+      margin: 20px 0;
       border: 2px solid black;
     }
 
@@ -245,21 +267,23 @@ header {
     }
 
     @media screen and (max-width: 800px) {
-      padding: 0;
+      padding: 10px;
       padding-top: $header-height;
       float: none;
       width: 100%;
+      display: flex;
+      flex-direction: column;
 
-      .new-trip {
-        float: none;
-        height: 50%;
+      h4 {
+        display: block;
         width: 100%;
-        padding: 10px;
+      }
 
-        h4 {
-          display: block;
-          width: 100%;
-        }
+      form {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: space-around;
 
         input {
           display: block;
@@ -288,13 +312,11 @@ header {
       margin: 5px;
       padding: 20px;
       border: 2px solid black;
-
-      .message {
-
-      }
+      overflow-x: hidden; // forces overflow-y to auto scroll
     }
 
     @media screen and (max-width: 800px) {
+      background-color: #DC8;
       padding: 0;
       padding-top: $header-height;
       float: none;
@@ -312,6 +334,7 @@ header {
 
       .message-input {
         flex-grow: 1;
+        width: 0; // overrides default min-width, actual width determined by flex-grow
         border: 2px solid black;
       }
     }

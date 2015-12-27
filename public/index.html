@@ -13,12 +13,15 @@
       <img src="img/cabin.jpg" class="cabin">
       <div class="cabin-body">
         <h1>DonnyBook</h1>
-        <h4>A website for the cabin.</h4><br />
+        <h4>A website for the cabin.</h4>
         <button class="see-calendar" href="#calendar">
           See the calender
         </button>
         <button class="schedule-trip" href="#trip">
           Schedule a trip
+        </button>
+        <button class="bulletin-board" href="#messages">
+          Bulletin board
         </button>
       </div>
     </div>
@@ -29,24 +32,24 @@
       <h1>Schedule a trip:</h1>
       <form>
         <h4>Start Date:</h4>
-        <input type="date" class="start-date" required><br />
+        <input type="date" class="start-date" required>
         <h4>End Date:</h4>
-        <input type="date" class="end-date" required><br />
+        <input type="date" class="end-date" required>
         <h4>Your Name:</h4>
-        <input type="text" class="name" required><br />
+        <input type="text" class="name" required>
         <h4>Comment:</h4>
-        <input type="text" class="comment" placeholder="(optional)"><br />
+        <input type="text" class="comment" placeholder="(optional)">
         <h4>&nbsp;</h4>
         <input type="submit" value="Submit" class="submit-trip">
       </form>
     </div>
-    <div class="messages-container para-box">
+    <div class="messages-container para-box" id="messages">
       <h1>Bulletin Board:</h1>
       <div class="messages">
         <!-- prepend messages here -->
       </div>
       <form class="new-message">
-        <input type="text" class="message-input">
+        <input type="text" class="message-input" required>
         <input type="submit" value="Send" class="message-send">
       </form>
     </div>
