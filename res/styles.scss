@@ -18,6 +18,11 @@ button, input[type="submit"] {
 
   &:active {
     box-shadow: none;
+    background-color: #F90;
+  }
+
+  &:focus {
+    outline: none;
   }
 }
 
@@ -57,6 +62,29 @@ header {
     font-size: 24px;
     margin: 3px;
   }
+
+  .dropdown {
+    background-color: #333;
+    position: fixed;
+    top: $header-height;
+    right: 0;
+    height: 0;
+    transition: height 0.25s;
+    overflow: hidden;
+    display: inline-block;
+
+    button {
+      background-color: transparent;
+      box-shadow: none;
+      display: block;
+      font-size: 24px;
+      margin: 10px;
+    }
+
+    @media screen and (max-width: 800px) {
+      left: 0;
+    }
+  }
 }
 
 .parallax {
@@ -65,6 +93,7 @@ header {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
+  position: relative;
 
   * {
     transform-style: preserve-3d;
