@@ -31,3 +31,20 @@ function initialiseState () {
     });
   });
 }
+
+self.addEventListener('push', function (evt) {
+  console.log('BING BONG!', evt);
+
+  var title = 'DonnyBook';
+  var body = 'New messages in DonnyBook!';
+  var icon = 'res/icon192.png';
+  var tag = 'sample_tag';
+
+  evt.waitUntil(
+    self.registration.showNotification(title, {
+      body: body,
+      icon: icon,
+      tag: tag
+    })
+  );
+});

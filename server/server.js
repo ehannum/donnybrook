@@ -1,10 +1,15 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var http = require('http').Server(app);
+var querystring = require('querystring');
+var http = require('http');
+var server = http.Server(app);
 var path = require('path');
 var Parse = require('parse/node').Parse;
 var auth = process.env.AUTH || null;
+var gKey = process.env.G_API_KEY || null;
+
+var fs = require('fs');
 
 // -- SERVE STATIC FILES and JSON
 
@@ -85,6 +90,7 @@ app.post('/messages', function (req, res) {
 
   post.save(null, {
     success: function (data) {
+      dispatchPushNotification(data);
       res.send(data);
     },
     error: function (data, error) {
@@ -126,26 +132,28 @@ app.post('/push-subs', function (req, res) {
     return;
   }
 
-  var endpoint = '';
+  var registrationId = '';
 
   if (req.body.endpoint.match(/https:\/\/android.googleapis.com\/gcm\/send/gi)) {
-    endpoint = req.body.endpoint.split('/');
-    endpoint = endpoint[endpoint.length -1];
+    var endpoint = req.body.endpoint.split('/');
+    registrationId = endpoint.pop();
+  } else {
+    registrationId = req.body.endpoint;
   }
 
   var Subscription = Parse.Object.extend('Subscriptions');
   var subscription = new Subscription();
   var query = new Parse.Query(Subscription);
-  query.equalTo('endpoint', endpoint);
+  query.equalTo('registrationId', registrationId);
 
   query.find({
     success: function (results) {
       if (!results.length) {
-        subscription.set('endpoint', endpoint);
+        subscription.set('registrationId', registrationId);
 
         subscription.save(null, {
           success: function (data) {
-            res.send(data);
+            res.send('New push notification registration ID created.');
           },
           error: function (data, error) {
             console.log('ERROR: ' + error.code + ' ' + error.message);
@@ -153,7 +161,7 @@ app.post('/push-subs', function (req, res) {
           }
         });
       } else {
-        res.send('Push notification endpoint already saved.');
+        res.send('Push notification registration ID already saved.');
       }
     },
     error: function (data, error) {
@@ -163,8 +171,50 @@ app.post('/push-subs', function (req, res) {
   });
 });
 
+// -- DISPATCH PUSH NOTIFICATIONS
+
+var dispatchPushNotification = function (data) {
+  if (!gKey) {
+    console.log('Error: Google authentication failed');
+    return;
+  }
+
+  var Subscription = Parse.Object.extend('Subscriptions');
+  var query = new Parse.Query(Subscription);
+
+  query.find({
+    success: function (results) {
+      var ids = [];
+
+      for (var i = 0; i < results.length; i++) {
+        ids.push(results[i].get('registrationId'));
+      }
+
+      var postReq = http.request({
+        method: 'POST',
+        hostname: 'android.googleapis.com',
+        path: '/gcm/send',
+        headers: {
+          'Authorization': 'key=' + gKey,
+          'Content-Type': 'application/json'
+        }
+      }, function (res) {
+        res.on('data', function (chunk) {
+          console.log('Got: ' + chunk);
+        });
+      });
+
+      postReq.write(JSON.stringify({registration_ids: ids}));
+      postReq.end();
+    },
+    error: function (data, error) {
+      console.log('ERROR: ' + error.code + ' ' + error.message);
+    }
+  });
+};
+
 // -- START SERVER
 
 var port = process.env.PORT || 3033;
 console.log('Listening on port', port);
-http.listen(port);
+server.listen(port);
