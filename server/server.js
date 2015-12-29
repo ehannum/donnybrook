@@ -171,6 +171,60 @@ app.post('/push-subs', function (req, res) {
   });
 });
 
+// -- DISABLE PUSH NOTIFICATION ENDPOINT
+
+app.delete('/push-subs', function (req, res) {
+  if (!auth) {
+    console.log('Error: Parse authentication failed');
+    res.send('Error: Parse authentication failed');
+    return;
+  }
+
+  var registrationId = '';
+
+  if (req.body.endpoint.match(/https:\/\/android.googleapis.com\/gcm\/send/gi)) {
+    var endpoint = req.body.endpoint.split('/');
+    registrationId = endpoint.pop();
+  } else {
+    registrationId = req.body.endpoint;
+  }
+
+  var Subscription = Parse.Object.extend('Subscriptions');
+  var subscription = new Subscription();
+  var query = new Parse.Query(Subscription);
+  query.equalTo('registrationId', registrationId);
+
+  query.find({
+    success: function (results) {
+      if (results.length === 1) {
+        query.get(results[0].id, {
+          success: function (singleSub) {
+            singleSub.destroy({
+              success: function (data) {
+                res.send('Push notification registration ID DESTROYED!');
+              },
+              error: function (data, error) {
+                console.log('ERROR: ' + error.code + ' ' + error.message);
+                res.send('ERROR: ' + error.code + ' ' + error.message);
+              }
+            });
+          },
+          error: function (data, error) {
+            console.log('ERROR: ' + error.code + ' ' + error.message);
+            res.send('ERROR: ' + error.code + ' ' + error.message);
+          }
+        });
+      } else {
+        res.send('Push notification registration ID not fount.');
+      }
+    },
+    error: function (data, error) {
+      console.log('ERROR: ' + error.code + ' ' + error.message);
+      res.send('ERROR: ' + error.code + ' ' + error.message);
+    }
+  });
+});
+
 // -- DISPATCH PUSH NOTIFICATIONS
 
 var dispatchPushNotification = function (data) {

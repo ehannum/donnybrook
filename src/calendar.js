@@ -22,7 +22,7 @@ $(function () {
 
   $('.menu').click(function (evt) {
     if ($('.dropdown').height() === 0) {
-      $('.dropdown').css('height', '140px');
+      $('.dropdown').css('height', '180px');
     } else {
       $('.dropdown').css('height', '0px');
     }
@@ -158,7 +158,44 @@ $(function () {
   };
 
   var unsubscribePush = function () {
+    navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
+      serviceWorkerRegistration.pushManager.getSubscription().then(function (pushSubscription) {
+        if (!pushSubscription) {
+          // you are not curently subscribed?
+          pushEnabled = false;
+          $('.push-notifications').text('Enable Notifications');
+          return;
+        }
 
+        pushSubscription.unsubscribe().then(function (success) {
+          pushEnabled = false;
+          $('.push-notifications').text('Enable Notifications');
+          deleteSubscription(pushSubscription);
+        })
+        .catch(function (err) {
+          console.warn('Error during unsubscription:', err);
+        });
+      })
+      .catch(function (err) {
+        console.log('Error JUST before unsubscription:', err);
+      });
+    });
+  };
+
+  deleteSubscription = function (subscription) {
+    $.ajax({
+      method: 'DELETE',
+      url: '/push-subs',
+      data: {
+        endpoint: subscription.endpoint
+      },
+      success: function (data) {
+        console.log('SUCCESS:', data);
+      },
+      error: function (err) {
+        console.log('Error:', err);
+      }
+    });
   };
 
   saveSubscription = function (subscription) {
@@ -175,5 +212,6 @@ $(function () {
         console.log('Error:', err);
       }
     });
+    return true;
   };
 });
