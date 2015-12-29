@@ -7,6 +7,7 @@ module.exports = function(grunt) {
       dist: {
         src: [
           'src/calendar.js',
+          'src/push-notification.js'
         ],
         dest: 'public/src/build.js'
       }

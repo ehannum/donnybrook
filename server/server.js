@@ -42,6 +42,7 @@ app.post('/calendar', function (req, res) {
 
   trip.save(null, {
     success: function (data) {
+      dispatchPushNotification(data);
       res.send(data);
     },
     error: function (data, error) {
