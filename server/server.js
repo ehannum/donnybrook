@@ -117,6 +117,13 @@ app.get('/messages', function (req, res) {
   });
 });
 
+// -- PUSH NOTIFICATIONS
+
+app.post('/push-subs', function (req, res) {
+  console.log(req.body);
+  res.send('Got it!');
+});
+
 // -- START SERVER
 
 var port = process.env.PORT || 3033;

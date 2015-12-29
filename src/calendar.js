@@ -1,4 +1,6 @@
 $(function () {
+
+  pushEnabled = false; // must be global for service-worker.js to access
   // replace "100vh" attributes with actual heights of elements
   // prevents the site from breaking if viewport changes
   // due to rotation or the keyboard opening.
@@ -29,6 +31,14 @@ $(function () {
   $('body').click(function (evt) {
     if (evt.target !== $('.menu')[0]) {
       $('.dropdown').css('height', '0px');
+    }
+  });
+
+  $('.push-notifications').click(function (evt) {
+    if (pushEnabled) {
+      unsubscribePush();
+    } else {
+      subscribePush();
     }
   });
 
@@ -122,4 +132,47 @@ $(function () {
       }
     });
   });
+
+  // enable push notifications if possible
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js').then(initialiseState);
+  } else {
+    console.warn('Service workers not supported in this browser. Push notifications not possible.');
+  }
+
+  var subscribePush = function () {
+    navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
+      serviceWorkerRegistration.pushManager.subscribe()
+      .then(function (subscription) {
+        console.log('Subscribing!');
+        pushEnabled = true;
+
+        $('.push-notifications').text('Disable Notifications');
+        return saveSubscription(subscription);
+      })
+      .catch(function (err) {
+        console.warn('Unable to subscribe to push:', err);
+      });
+    });
+  };
+
+  var unsubscribePush = function () {
+
+  };
+
+  var saveSubscription = function (subscription) {
+    $.ajax({
+      method: 'POST',
+      url: '/push-subs',
+      data: {
+        subscription: subscription
+      },
+      success: function (data) {
+      },
+      error: function (err) {
+        console.log('Error:', err);
+      }
+    });
+  };
 });

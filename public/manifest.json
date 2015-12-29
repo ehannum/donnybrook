@@ -1,5 +1,6 @@
 {
   "name": "DonnyBook",
+  "short_name": "DonnyBook",
   "icons": [
     {
       "src": "res/icon36.png",
@@ -40,5 +41,6 @@
   ],
   "start_url": "index.html",
   "display": "standalone",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "gcm_sender_id": "94318509119"
 }
