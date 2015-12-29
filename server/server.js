@@ -117,11 +117,50 @@ app.get('/messages', function (req, res) {
   });
 });
 
-// -- PUSH NOTIFICATIONS
+// -- SAVE PUSH NOTIFICATION ENDPOINTS
 
 app.post('/push-subs', function (req, res) {
-  console.log(req.body);
-  res.send('Got it!');
+  if (!auth) {
+    console.log('Error: Parse authentication failed');
+    res.send('Error: Parse authentication failed');
+    return;
+  }
+
+  var endpoint = '';
+
+  if (req.body.endpoint.match(/https:\/\/android.googleapis.com\/gcm\/send/gi)) {
+    endpoint = req.body.endpoint.split('/');
+    endpoint = endpoint[endpoint.length -1];
+  }
+
+  var Subscription = Parse.Object.extend('Subscriptions');
+  var subscription = new Subscription();
+  var query = new Parse.Query(Subscription);
+  query.equalTo('endpoint', endpoint);
+
+  query.find({
+    success: function (results) {
+      if (!results.length) {
+        subscription.set('endpoint', endpoint);
+
+        subscription.save(null, {
+          success: function (data) {
+            res.send(data);
+          },
+          error: function (data, error) {
+            console.log('ERROR: ' + error.code + ' ' + error.message);
+            res.send('ERROR: ' + error.code + ' ' + error.message);
+          }
+        });
+      } else {
+        res.send('Push notification endpoint already saved.');
+      }
+    },
+    error: function (data, error) {
+      console.log('ERROR: ' + error.code + ' ' + error.message);
+      res.send('ERROR: ' + error.code + ' ' + error.message);
+    }
+  });
 });
 
 // -- START SERVER

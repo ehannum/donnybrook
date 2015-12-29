@@ -161,14 +161,15 @@ $(function () {
 
   };
 
-  var saveSubscription = function (subscription) {
+  saveSubscription = function (subscription) {
     $.ajax({
       method: 'POST',
       url: '/push-subs',
       data: {
-        subscription: subscription
+        endpoint: subscription.endpoint
       },
       success: function (data) {
+        console.log('SUCCESS:', data);
       },
       error: function (err) {
         console.log('Error:', err);
