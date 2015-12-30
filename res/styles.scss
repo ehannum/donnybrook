@@ -1,5 +1,12 @@
 $header-height: 50px;
 
+// color pallete
+$dark-brown:     #531;
+$turquoise:      #1AB;
+$red-orange:     #F40;
+$light-tan:      #EDA;
+$seventies-puke: #EFC;
+
 @mixin imageFill {
   @media screen and (orientation:portrait) {
     height: 100%;
@@ -12,13 +19,13 @@ $header-height: 50px;
 button, input[type="submit"] {
   border: 0;
   border-radius: 5px;
-  background-color: #09C;
+  background-color: $turquoise;
   color: #FFF;
-  box-shadow: #333 3px 3px;
+  box-shadow: $dark-brown 3px 3px;
 
   &:active {
-    box-shadow: none;
-    background-color: #F90;
+    box-shadow: $dark-brown -3px -3px;
+    background-color: $red-orange;
   }
 
   &:focus {
@@ -46,7 +53,7 @@ header {
   left: 0;
   width: 100%;
   height: $header-height;
-  background: #333;
+  background: $dark-brown;
   color: #FFF;
   padding: 5px;
 
@@ -64,7 +71,7 @@ header {
   }
 
   .dropdown {
-    background-color: #333;
+    background-color: $dark-brown;
     position: fixed;
     top: $header-height;
     right: 0;
@@ -124,7 +131,7 @@ header {
       width: 100%;
 
       font-size: 2rem;
-      text-shadow: 3px 3px #000;
+      text-shadow: 3px 3px $dark-brown;
 
       * {
         margin: 0;
@@ -210,6 +217,7 @@ header {
       flex-wrap: wrap;
       height: 100%;
       border: 1px solid #000;
+      background-color: #FFF;
 
       .day {
         flex-grow: 1;
@@ -268,7 +276,7 @@ header {
 
   .trip-container {
     height: 100vh;
-    background-color: #CDF;
+    background-color: $light-tan;
     padding: 50px;
     padding-top: $header-height + 50px;
     font-size: 1.4rem;
@@ -302,6 +310,7 @@ header {
       width: 100%;
       display: flex;
       flex-direction: column;
+      background-color: $seventies-puke;
 
       h4 {
         display: block;
@@ -325,7 +334,7 @@ header {
 
   .messages-container {
     height: 100vh;
-    background-color: #CDF;
+    background-color: $light-tan;
     padding: 25px;
     padding-top: $header-height + 50px;
     font-size: 1.4rem;
@@ -336,16 +345,20 @@ header {
     flex-direction: column;
 
     .messages {
+      font-family: Helvetica, Helvetica-Neue, Arial, serif;
       flex-grow: 1;
       background-color: #FFF;
       margin: 5px;
       padding: 20px;
       border: 2px solid black;
       overflow-x: hidden; // forces overflow-y to auto scroll
+
+      p {
+        margin: 10px 0;
+      }
     }
 
     @media screen and (max-width: 800px) {
-      background-color: #DC8;
       padding: 0;
       padding-top: $header-height;
       float: none;

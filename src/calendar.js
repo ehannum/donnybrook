@@ -46,8 +46,9 @@ $(function () {
   $.get('/messages', function (data) {
     for (var i = 0; i < data.length; i++) {
       var postTime = moment(new Date(data[i].createdAt)).format('MM/DD/YY');
-      var mess = $('.messages').prepend('<h4>').find('h4')[0];
-      $(mess).text(postTime + ' - ' + data[i].message);
+      var mess = $('.messages').prepend('<p>').find('p')[0];
+      $(mess).text(data[i].message);
+      $(mess).prepend('<b> ' + postTime + ': </b>');
     }
   });
 
@@ -116,8 +117,9 @@ $(function () {
       },
       success: function (data) {
         var postTime = moment(new Date(data.createdAt)).format('MM/DD/YY');
-        var mess = $('.messages').prepend('<h4>').find('h4')[0];
-        $(mess).text(postTime + ' - ' + unescape(data.message));
+        var mess = $('.messages').prepend('<p>').find('p')[0];
+        $(mess).text(unescape(data.message));
+        $(mess).prepend('<b> ' + postTime + ': </b>');
       },
       error: function (error) {
         console.log(error);
