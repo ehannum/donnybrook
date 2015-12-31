@@ -22,6 +22,9 @@ button, input[type="submit"] {
   background-color: $turquoise;
   color: #FFF;
   box-shadow: $dark-brown 3px 3px;
+  line-height: 100%;
+  font-family: "Schoolbell", sans-serif;
+  padding: 4px 6px;
 
   &:active {
     box-shadow: $dark-brown -3px -3px;
@@ -67,8 +70,9 @@ header {
 
   .menu {
     float: right;
-    font-size: 24px;
-    margin: 3px;
+    font-size: 26px;
+    margin: 2px;
+    font-family: monospace;
   }
 
   .dropdown {
@@ -117,15 +121,12 @@ header {
     z-index: -1;
 
     .cabin {
-      transform: translateZ(-1px) scale(2);
+      transform: translate(-25%) translateZ(-1px) scale(2);
       position: absolute;
       top: 0;
       left: 0;
-      @include imageFill;
-
-      @media screen and (max-width: 800px) {
-        transform: translate(-25%);
-      }
+      // @include imageFill;
+      height: 100%;
     }
 
     .cabin-body {
@@ -135,7 +136,7 @@ header {
       width: 100%;
 
       font-size: 2rem;
-      text-shadow: 3px 3px $dark-brown;
+      text-shadow: 0 0 10px #000;
 
       * {
         margin: 0;
@@ -189,6 +190,11 @@ header {
       display: flex;
       font-size: 32px;
 
+      @media screen and (max-width: 800px) {
+        font-size: 28px; // for browsers with no "vw" support
+        font-size: 8vw;
+      }
+
       * {
         cursor: pointer;
         flex-grow: 1;
@@ -238,6 +244,7 @@ header {
         }
 
         p {
+          font-family: Helvetica, Helvetica-Neue, Arial, serif;
           height: 0;
           margin: 0;
         }

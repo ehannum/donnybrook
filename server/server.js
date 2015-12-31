@@ -228,10 +228,24 @@ app.delete('/push-subs', function (req, res) {
 
 // -- DISPATCH PUSH NOTIFICATIONS
 
+var lastPushNotification = 0;
+var pushSpamDelay = 10000;
+
 var dispatchPushNotification = function (data) {
   if (!gKey) {
     console.log('Error: Google authentication failed');
     return;
+  }
+
+  var timeNow = (new Date()).getTime();
+
+  if (lastPushNotification < lastPushNotification + pushSpamDelay) {
+    pushSpamDelay += 5000;
+    console.log('Throttling push notification frequency to once per ' + pushSpamDelay/1000 + ' sec.');
+    return;
+  } else {
+    lastPushNotification = timeNow;
+    pushSpamDelay = 10000;
   }
 
   var Subscription = Parse.Object.extend('Subscriptions');
@@ -255,7 +269,7 @@ var dispatchPushNotification = function (data) {
         }
       }, function (res) {
         res.on('data', function (chunk) {
-          console.log('Got: ' + chunk);
+          console.log('Error posting to google api. Got ' + chunk);
         });
       });
 
