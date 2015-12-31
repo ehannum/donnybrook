@@ -127,6 +127,10 @@ header {
       left: 0;
       // @include imageFill;
       height: 100%;
+
+      @media screen and (max-width: 800px) {
+        transform: translate(-25%);
+      }
     }
 
     .cabin-body {
