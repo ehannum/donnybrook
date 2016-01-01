@@ -3,9 +3,9 @@ $header-height: 50px;
 // color pallete
 $dark-brown:     #531;
 $turquoise:      #1AB;
-$red-orange:     #E31;
+$red-orange:     #E41;
 $light-tan:      #EDA;
-$seventies-puke: #AC8;
+$seventies-puke: #AC7;
 
 @mixin imageFill {
   @media screen and (orientation:portrait) {
@@ -70,9 +70,11 @@ header {
 
   .menu {
     float: right;
-    font-size: 26px;
     margin: 2px;
-    font-family: monospace;
+
+    img {
+      pointer-events: none;
+    }
   }
 
   .dropdown {
