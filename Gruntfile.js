@@ -4,13 +4,21 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     concat: {
-      dist: {
+      calendar: {
         src: [
+          'src/shared.js',
           'src/calendar.js',
           'src/push-notification.js'
         ],
         dest: 'public/src/build.js'
-      }
+      },
+      rides: {
+        src: [
+          'src/shared.js',
+          'src/rideshare.js'
+        ],
+        dest: 'public/src/rides.js'
+      },
     },
 
     uglify: {
@@ -38,7 +46,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-sass');
 
   // 4. Where we tell Grunt what to do when we type "grunt" into the terminal.
-  grunt.registerTask('default', ['concat', 'uglify', 'sass']);
-  grunt.registerTask('dev', ['concat', 'sass']);
+  grunt.registerTask('default', ['concat:calendar', 'concat:rides', 'uglify', 'sass']);
+  grunt.registerTask('dev', ['concat:calendar', 'concat:rides', 'sass']);
 
 };
