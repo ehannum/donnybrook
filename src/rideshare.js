@@ -49,6 +49,7 @@ $(function () {
 
     for (var j = 0; j < people.length; j++) {
       for (var k = 0; k < cars.length; k++) {
+        if (people[j].leaving > cars[k].leaving) continue;
         if (people[j].group) {
           var group = people[j].group;
           var peopleInGroup = multiObjectMatch(people, {group: group});
@@ -57,10 +58,8 @@ $(function () {
             multiObjectMatch(people, {group: group}, false, true);
             j--;
             break;
-          } else {
-            continue; // not enough room in this car for the people in this group
           }
-        } else if (people[j].leaving <= cars[k].leaving && cars[k].passengers.length < cars[k].seats) {
+        } else if (cars[k].passengers.length < cars[k].seats) {
           cars[k].passengers.push(people[j]);
           people.splice(j, 1);
           j--;
