@@ -1,5 +1,6 @@
 node_modules/
 public/src/build.js
+public/src/rides.js
 public/res/*.css
 public/res/*.map
 .sass-cache/
