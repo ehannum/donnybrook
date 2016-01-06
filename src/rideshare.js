@@ -3,9 +3,9 @@ $(function () {
   // {
   //   name: "string",  (it's your name you dip!)
   //   hasCar: number,  (# of seats, 0 = no car)
-  //   leaving: number, (Date.getTime() earliest able)
+  //   leaving: Date,   (earliest Date able to go)
   //   keymaster: bool, (the person with the keys)
-  //   group: number    (groups should stick together)
+  //   group: "string"  (groups should stick together)
   // }
 
   var generateCarpools = function (people) {
@@ -19,6 +19,7 @@ $(function () {
       }
       if (people[i].hasCar) {
         var car = {
+          driver: people[i].name,
           leaving: people[i].leaving,
           passengers: [],
           seats: people[i].hasCar
@@ -74,7 +75,12 @@ $(function () {
       cars.push({leftovers: people});
     }
 
-    return cars;
+    return cars.map(function (ride) {
+      ride.passengers = multiObjectStrip(ride.passengers, 'name');
+      ride.passengers.splice(ride.passengers.indexOf(ride.driver), 1);
+      ride.seats--;
+      return ride;
+    });
   };
 
   var multiObjectMatch = function (objects, properties, strict, destructive) {
@@ -124,7 +130,7 @@ $(function () {
     return result;
   };
 
-  var multiObjectSearch = function (objects, keyName) {
+  var multiObjectStrip = function (objects, keyName) {
     var results = [];
 
     for (var i = 0; i < objects.length; i++) {
@@ -135,4 +141,102 @@ $(function () {
 
     return results;
   };
+
+  // DEBUGGERY
+
+  var sampleInput = [
+    {
+      name: "Kevin",
+      hasCar: 4,
+      leaving: new Date('Jan 15 2016 20:00:00 PST'),
+      keymaster: false,
+      group: '1'
+    },
+    {
+      name: "Brian",
+      hasCar: 4,
+      leaving: new Date('Jan 15 2016 10:00:00 PST'),
+      keymaster: false,
+      group: '2'
+    },
+    {
+      name: "Eric",
+      hasCar: 4,
+      leaving: new Date('Jan 15 2016 10:00:00 PST'),
+      keymaster: true,
+      group: null
+    },
+    {
+      name: "Thor",
+      hasCar: 4,
+      leaving: new Date('Jan 15 2016 10:00:00 PST'),
+      keymaster: false,
+      group: '3'
+    },
+    {
+      name: "Joe",
+      hasCar: 0,
+      leaving: new Date('Jan 15 2016'),
+      keymaster: false,
+      group: null
+    },
+    {
+      name: "Tony",
+      hasCar: 0,
+      leaving: new Date('Jan 15 2016 20:00:00 PST'),
+      keymaster: false,
+      group: '4'
+    },
+    {
+      name: "Serena",
+      hasCar: 0,
+      leaving: new Date('Jan 15 2016 20:00:00 PST'),
+      keymaster: false,
+      group: '1'
+    },
+    {
+      name: "Sarah",
+      hasCar: 0,
+      leaving: new Date('Jan 15 2016'),
+      keymaster: false,
+      group: '3'
+    },
+    {
+      name: "Jimmy",
+      hasCar: 0,
+      leaving: new Date('Jan 15 2016 20:00:00 PST'),
+      keymaster: false,
+      group: '4'
+    },
+    {
+      name: "David",
+      hasCar: 0,
+      leaving: new Date('Jan 15 2016'),
+      keymaster: false,
+      group: null
+    },
+    {
+      name: "Damian",
+      hasCar: 0,
+      leaving: new Date('Jan 15 2016'),
+      keymaster: false,
+      group: null
+    },
+    {
+      name: "Lisa",
+      hasCar: 0,
+      leaving: new Date('Jan 15 2016'),
+      keymaster: false,
+      group: '2'
+    },
+    {
+      name: "Hannah",
+      hasCar: 0,
+      leaving: new Date('Jan 15 2016'),
+      keymaster: false,
+      group: null
+    }
+  ];
+
+  window.rides = generateCarpools(sampleInput);
 });
