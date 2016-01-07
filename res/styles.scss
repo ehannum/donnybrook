@@ -16,7 +16,7 @@ $seventies-puke: #AC7;
   }
 }
 
-button, input[type="submit"] {
+button, input[type="submit"], input[type="button"] {
   border: 0;
   border-radius: 5px;
   background-color: $turquoise;
@@ -312,7 +312,7 @@ header {
       font-size: 24px;
       width: 60%;
       margin: 20px 0;
-      border: 2px solid black;
+      border: 2px solid #000;
     }
 
     .submit-trip {
@@ -367,7 +367,7 @@ header {
       background-color: #FFF;
       margin: 5px;
       padding: 20px;
-      border: 2px solid black;
+      border: 2px solid #000;
       overflow-x: hidden; // forces overflow-y to auto scroll
 
       p {
@@ -394,7 +394,38 @@ header {
       .message-input {
         flex-grow: 1;
         width: 0; // overrides default min-width, actual width determined by flex-grow
-        border: 2px solid black;
+        border: 2px solid #000;
+      }
+    }
+  }
+
+  .carpool-input-container {
+    padding: 0;
+    padding-top: $header-height;
+    text-align: center;
+    background-color: #FFF;
+    height: 100vh;
+    z-index: 1;
+    text-align: center;
+
+    .add-passenger {
+      margin: 0 auto;
+      height: 100%;
+      padding: 5px;
+
+      .passenger-input {
+        display: inline-block;
+        margin: 10px 0;
+
+        input {
+          font-size: 22px;
+          max-width: 100%;
+        }
+
+        @media screen and (max-width: 800px) {
+          display: block;
+          width: 100%;
+        }
       }
     }
   }

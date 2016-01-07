@@ -15,7 +15,34 @@
 </head>
 <body>
   <div class="parallax">
-    <div class="para-box">
+    <div class="para-box carpool-input-container">
+      <form class="add-passenger">
+        <div class="passenger-input">
+          <h4>Name</h4>
+          <input type="text" class="passenger-name" required>
+        </div>
+        <div class="passenger-input">
+          <h4>Seats</h4>
+          <input type="number" min="0" max="9" class="passenger-has-car">
+        </div>
+        <div class="passenger-input">
+          <h4>Leaving</h4>
+          <input type="datetime-local" class="passenger-leaving">
+        </div>
+        <div class="passenger-input">
+          <h4>Key?</h4>
+          <input type="checkbox" class="passenger-keymaster">
+        </div>
+        <div class="passenger-input">
+          <h4>Group</h4>
+          <input type="number" min="0" max="9" class="passenger-group">
+        </div>
+        <div class="passenger-input">
+          <input type="submit" class="add-button" value="Add">
+        </div>
+      </form>
+    </div>
+    <div class="para-box carpool-output-container">
     </div>
   </div>
   <header>

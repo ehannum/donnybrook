@@ -1,12 +1,56 @@
 $(function () {
-  // Person object:
-  // {
-  //   name: "string",  (it's your name you dip!)
-  //   hasCar: number,  (# of seats, 0 = no car)
-  //   leaving: Date,   (earliest Date able to go)
-  //   keymaster: bool, (the person with the keys)
-  //   group: "string"  (groups should stick together)
-  // }
+
+  $('.add-passenger').submit(function (evt) {
+
+    evt.preventDefault();
+
+    var passengerName = $('.passenger-name').val();
+    var passengerHasCar = $('.passenger-has-car').val() - 0;
+    var passengerLeaving = $('.passenger-leaving').val();
+    var passengerKeymaster = $('.passenger-keymaster').prop('checked');
+    var passengerGroup = $('.passenger-group').val();
+
+    // So that "- 0" is going to require some explanation.
+    // Basically it parses integers better than parseInt
+    // which I know is stupid but... it's javascript what
+    // can I say? parseInt("") returns NaN, "" - 0 returns
+    // 0 as a number.
+
+    if (passengerLeaving === '') {
+      passengerLeaving = Date.now();
+    } else {
+      passengerLeaving = new Date(passengerLeaving);
+    }
+
+    attendees.push({
+      name: passengerName,
+      hasCar: passengerHasCar,
+      leaving: passengerLeaving,
+      keymaster: passengerKeymaster,
+      group: passengerGroup
+    });
+
+    $('.passenger-name').val('');
+    $('.passenger-has-car').val('');
+    $('.passenger-leaving').val('');
+    $('.passenger-keymaster').prop('checked', false);
+    $('.passenger-group').val('');
+
+    console.log(attendees);
+  });
+
+  // CARPOOL GENERATOR
+
+  var attendees = [
+    // Person object:
+    // {
+    //   name: "string",  (it's your name you dip!)
+    //   hasCar: number,  (# of seats, 0 = no car)
+    //   leaving: Date,   (earliest Date able to go)
+    //   keymaster: bool, (the person with the keys)
+    //   group: "string"  (groups should stick together)
+    // }
+  ];
 
   var generateCarpools = function (people) {
     var keymaster = null;
@@ -76,6 +120,7 @@ $(function () {
     }
 
     return cars.map(function (ride) {
+      if (!ride.passengers) return ride;
       ride.passengers = multiObjectStrip(ride.passengers, 'name');
       ride.passengers.splice(ride.passengers.indexOf(ride.driver), 1);
       ride.seats--;
@@ -141,102 +186,4 @@ $(function () {
 
     return results;
   };
-
-  // DEBUGGERY
-
-  var sampleInput = [
-    {
-      name: "Kevin",
-      hasCar: 4,
-      leaving: new Date('Jan 15 2016 20:00:00 PST'),
-      keymaster: false,
-      group: '1'
-    },
-    {
-      name: "Brian",
-      hasCar: 4,
-      leaving: new Date('Jan 15 2016 10:00:00 PST'),
-      keymaster: false,
-      group: '2'
-    },
-    {
-      name: "Eric",
-      hasCar: 4,
-      leaving: new Date('Jan 15 2016 10:00:00 PST'),
-      keymaster: true,
-      group: null
-    },
-    {
-      name: "Thor",
-      hasCar: 4,
-      leaving: new Date('Jan 15 2016 10:00:00 PST'),
-      keymaster: false,
-      group: '3'
-    },
-    {
-      name: "Joe",
-      hasCar: 0,
-      leaving: new Date('Jan 15 2016'),
-      keymaster: false,
-      group: null
-    },
-    {
-      name: "Tony",
-      hasCar: 0,
-      leaving: new Date('Jan 15 2016 20:00:00 PST'),
-      keymaster: false,
-      group: '4'
-    },
-    {
-      name: "Serena",
-      hasCar: 0,
-      leaving: new Date('Jan 15 2016 20:00:00 PST'),
-      keymaster: false,
-      group: '1'
-    },
-    {
-      name: "Sarah",
-      hasCar: 0,
-      leaving: new Date('Jan 15 2016'),
-      keymaster: false,
-      group: '3'
-    },
-    {
-      name: "Jimmy",
-      hasCar: 0,
-      leaving: new Date('Jan 15 2016 20:00:00 PST'),
-      keymaster: false,
-      group: '4'
-    },
-    {
-      name: "David",
-      hasCar: 0,
-      leaving: new Date('Jan 15 2016'),
-      keymaster: false,
-      group: null
-    },
-    {
-      name: "Damian",
-      hasCar: 0,
-      leaving: new Date('Jan 15 2016'),
-      keymaster: false,
-      group: null
-    },
-    {
-      name: "Lisa",
-      hasCar: 0,
-      leaving: new Date('Jan 15 2016'),
-      keymaster: false,
-      group: '2'
-    },
-    {
-      name: "Hannah",
-      hasCar: 0,
-      leaving: new Date('Jan 15 2016'),
-      keymaster: false,
-      group: null
-    }
-  ];
-
-  window.rides = generateCarpools(sampleInput);
 });
