@@ -38,13 +38,13 @@ $(function () {
   var thisMonth = moment.months((new Date()).getMonth());
 
   $.get('/events', function (data) {
-    for (var i = 0; i < data.length; i++) {
-      createTrip(data[i].startDate.iso, data[i].endDate.iso, data[i].name, data[i].comment);
+    for (var i in data) {
+      createTrip(data[i].startDate, data[i].endDate, data[i].name, data[i].comment);
     }
   });
 
   $.get('/messages', function (data) {
-    for (var i = 0; i < data.length; i++) {
+    for (var i in data) {
       var postTime = moment(new Date(data[i].createdAt)).format('MM/DD/YY');
       var mess = $('.messages').prepend('<p>').find('p')[0];
       $(mess).text(data[i].message);

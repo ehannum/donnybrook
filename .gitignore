@@ -4,3 +4,4 @@ public/res/*.css
 public/res/*.map
 .sass-cache/
 .env
+server/firebase_cert.json

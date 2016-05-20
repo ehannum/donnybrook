@@ -5,11 +5,25 @@ var querystring = require('querystring');
 var http = require('http');
 var server = http.Server(app);
 var path = require('path');
-var Parse = require('parse/node').Parse;
-var auth = process.env.AUTH || null;
-var gKey = process.env.G_API_KEY || null;
 
-var fs = require('fs');
+var firebase = require('firebase');
+var gKey = process.env.G_API_KEY || null;
+var fKey = process.env.FIREBASE_KEY || null;
+var db = null;
+
+// -- FIREBASE DATABASE SETUP
+
+if (fKey) {
+  firebase.initializeApp({
+    serviceAccount: __dirname + '/firebase_cert.json',
+    databaseURL: 'https://donnybook-push.firebaseio.com/'
+  });
+
+  db = firebase.database();
+  console.log('Connected and authenticated to Firebase.');
+} else {
+  console.log('Firebase authentication failure: No Private Key found.');
+}
 
 // -- SERVE STATIC FILES and JSON
 
@@ -20,107 +34,95 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // -- CREATE CALENDAR EVENTS
 
-if (auth) {
-  auth = JSON.parse(auth);
-  Parse.initialize(auth.appID, auth.javaScriptKey);
-}
-
 app.post('/calendar', function (req, res) {
-  if (!auth) {
-    console.log('Error: Parse authentication failed');
-    res.send('Error: Parse authentication failed');
+  if (!db) {
+    console.log('Error: Firebase authentication failed');
+    res.send('Error: Firebase authentication failed');
     return;
   }
 
-  var Trip = Parse.Object.extend('Trips');
-  var trip = new Trip();
+  var ref = db.ref('trips/2016');
 
-  trip.set('startDate', new Date(req.body.startDate));
-  trip.set('endDate', new Date(req.body.endDate));
-  trip.set('name', req.body.name);
-  trip.set('comment', req.body.comment);
+  var tripRef = ref.push();
 
-  trip.save(null, {
-    success: function (data) {
-      dispatchPushNotification(data);
-      res.send(data);
-    },
-    error: function (data, error) {
-      console.log('ERROR: ' + error.code + ' ' + error.message);
-      res.send('ERROR: ' + error.code + ' ' + error.message);
+  tripRef.set(
+    {
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      name: req.body.name,
+      comment: req.body.comment
+    }, function (err) {
+      if (err) {
+        console.log('error:', err);
+        res.send('ERROR: ' + err);
+      } else {
+        res.send('Success!');
+      }
     }
-  });
+  );
 });
 
 // -- FETCH CALENDAR EVENTS
 
 app.get('/events', function (req, res) {
-  if (!auth) {
-    console.log('Error: Parse authentication failed');
-    res.send('Error: Parse authentication failed');
+  if (!db) {
+    console.log('Error: Firebase authentication failed');
+    res.send('Error: Firebase authentication failed');
     return;
   }
 
-  var Trip = Parse.Object.extend('Trips');
-  var trips = new Parse.Query(Trip);
+  var ref = db.ref('trips/2016');
 
-  trips.find({
-    success: function (data) {
-      res.send(data);
-    },
-    error: function (data, error) {
-      console.log('ERROR: ' + error.code + ' ' + error.message);
-      res.send('ERROR: ' + error.code + ' ' + error.message);
-    }
+  ref.once('value', function (data) {
+    res.send(data.val());
   });
 });
 
 // -- POST TO BULLETIN BOARD
 
 app.post('/messages', function (req, res) {
-  if (!auth) {
-    console.log('Error: Parse authentication failed');
-    res.send('Error: Parse authentication failed');
+  if (!db) {
+    console.log('Error: Firebase authentication failed');
+    res.send('Error: Firebase authentication failed');
     return;
   }
 
-  var Post = Parse.Object.extend('Posts');
-  var post = new Post();
+  var ref = db.ref('messages');
 
-  post.set('message', req.body.message);
+  var messRef = ref.push();
 
-  post.save(null, {
-    success: function (data) {
-      dispatchPushNotification(data);
-      res.send(data);
-    },
-    error: function (data, error) {
-      console.log('ERROR: ' + error.code + ' ' + error.message);
-      res.send('ERROR: ' + error.code + ' ' + error.message);
+  messRef.set(
+    {
+      createdAt: (new Date()).getTime(),
+      message: req.body.message
+    }, function (err) {
+      if (err) {
+        console.log('error:', err);
+        res.send('ERROR: ' + err);
+      } else {
+        res.send({
+          createdAt: (new Date()).getTime(),
+          message: req.body.message
+        });
+      }
     }
-  });
+  );
 });
 
 // -- FETCH BULLETIN BOARD MESSAGES
 
 app.get('/messages', function (req, res) {
-  if (!auth) {
-    console.log('Error: Parse authentication failed');
-    res.send('Error: Parse authentication failed');
+  if (!db) {
+    console.log('Error: Firebase authentication failed');
+    res.send('Error: Firebase authentication failed');
     return;
   }
 
-  var Post = Parse.Object.extend('Posts');
-  var posts = new Parse.Query(Post);
+  var ref = db.ref('messages');
 
-  posts.find({
-    success: function (data) {
-      res.send(data);
-    },
-    error: function (data, error) {
-      console.log('ERROR: ' + error.code + ' ' + error.message);
-      res.send('ERROR: ' + error.code + ' ' + error.message);
-    }
+  ref.once('value', function (data) {
+    console.log(data.val());
+    res.send(data.val());
   });
 });
 
