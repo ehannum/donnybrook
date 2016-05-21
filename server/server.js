@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var querystring = require('querystring');
 var http = require('http');
+var https = require('https');
 var server = http.Server(app);
 var path = require('path');
 
@@ -56,6 +57,7 @@ app.post('/calendar', function (req, res) {
         console.log('error:', err);
         res.send('ERROR: ' + err);
       } else {
+        dispatchPushNotification();
         res.send('Success!');
       }
     }
@@ -198,56 +200,67 @@ app.delete('/push-subs', function (req, res) {
 // -- DISPATCH PUSH NOTIFICATIONS
 
 var lastPushNotification = 0;
-var pushSpamDelay = 10000;
+var pushSpamDelay = 30000;
 
 var dispatchPushNotification = function (data) {
   if (!gKey) {
     console.log('Error: Google authentication failed');
     return;
   }
+  if (!db) {
+    console.log('Error: Firebase authentication failed');
+    res.send('Error: Firebase authentication failed');
+    return;
+  }
 
   var timeNow = (new Date()).getTime();
 
-  if (lastPushNotification < lastPushNotification + pushSpamDelay) {
-    pushSpamDelay += 5000;
+  if (timeNow < lastPushNotification + pushSpamDelay) {
+    pushSpamDelay += 30000;
     console.log('Throttling push notification frequency to once per ' + pushSpamDelay/1000 + ' sec.');
     return;
   } else {
     lastPushNotification = timeNow;
-    pushSpamDelay = 10000;
+    pushSpamDelay = 30000;
   }
 
-  var Subscription = Parse.Object.extend('Subscriptions');
-  var query = new Parse.Query(Subscription);
+  var ref = db.ref('subscriptions');
 
-  query.find({
-    success: function (results) {
-      var ids = [];
+  ref.once('value', function(data){
+    var ids = [];
 
-      for (var i = 0; i < results.length; i++) {
-        ids.push(results[i].get('registrationId'));
+    data.forEach(function(obj){
+      ids.push(obj.child('registrationId').val());
+    });
+
+
+    var postReq = https.request({
+      method: 'POST',
+      hostname: 'android.googleapis.com',
+      path: '/gcm/send',
+      headers: {
+        'Authorization': 'key=' + gKey,
+        'Content-Type': 'application/json'
       }
-
-      var postReq = http.request({
-        method: 'POST',
-        hostname: 'android.googleapis.com',
-        path: '/gcm/send',
-        headers: {
-          'Authorization': 'key=' + gKey,
-          'Content-Type': 'application/json'
+    }, function (res) {
+      res.setEncoding('utf8');
+      res.on('data', function (chunk) {
+        chunk = JSON.parse(chunk);
+        console.log('success:', chunk.success);
+        if (res.statusCode == 200 && chunk.success) {
+          console.log('Push notification (theoretically) sent!');
         }
-      }, function (res) {
-        res.on('data', function (chunk) {
-          console.log('Error posting to google api. Got ' + chunk);
-        });
       });
+    });
 
-      postReq.write(JSON.stringify({registration_ids: ids}));
-      postReq.end();
-    },
-    error: function (data, error) {
-      console.log('ERROR: ' + error.code + ' ' + error.message);
-    }
+    postReq.on('error', function (err) {
+      console.log('Error:', err);
+    });
+
+    console.log(JSON.stringify({registration_ids: ids}));
+
+    postReq.write(JSON.stringify({registration_ids: ids}));
+    postReq.end();
   });
 };
 

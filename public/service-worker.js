@@ -36,7 +36,7 @@ self.addEventListener('push', function (evt) {
   console.log('BING BONG!', evt);
 
   var title = 'DonnyBook';
-  var body = 'New messages in DonnyBook!';
+  var body = 'New cabin trip scheduled in DonnyBook!';
   var icon = 'res/icon192.png';
   var tag = 'sample_tag';
 
