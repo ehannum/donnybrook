@@ -1,12 +1,37 @@
 $(function () {
 
-  pushEnabled = false; // must be global for service-worker.js to access
+  pushEnabled = false; // must be global for service-worker.js to access.
+
   // replace "100vh" attributes with actual heights of elements
   // prevents the site from breaking if viewport changes
   // due to rotation or the keyboard opening.
   $('.para-box').each(function (index, element) {
     $(this).css('height', window.innerHeight + 'px');
   });
+
+  // fuzzy scroll snapping
+  $('.parallax').scroll(function(){
+    var $this = $(this);
+    if ($this.data('scrollTimeout')) {
+      clearTimeout($this.data('scrollTimeout'));
+    }
+    $this.data('scrollTimeout', setTimeout(fuzzyScroll, 500));
+  });
+
+  var fuzzyScroll = function () {
+    var boxHeight = parseInt($('.para-box').css('height'));
+    var scrollPos = $('.parallax').scrollTop();
+
+    var distance = scrollPos % boxHeight;
+    var nearest = Math.round(scrollPos / boxHeight);
+    var marginOfError = boxHeight / 8;
+
+    if (distance < marginOfError || distance > boxHeight - marginOfError) {
+      $('.parallax').animate({
+        scrollTop: boxHeight * nearest
+      }, 250);
+    }
+  };
 
   var calendar = $('#calendar').clndr({
     template: $('#clndr-temp').html(),
