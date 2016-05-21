@@ -121,7 +121,6 @@ app.get('/messages', function (req, res) {
   var ref = db.ref('messages');
 
   ref.once('value', function (data) {
-    console.log(data.val());
     res.send(data.val());
   });
 });
@@ -129,9 +128,9 @@ app.get('/messages', function (req, res) {
 // -- SAVE PUSH NOTIFICATION ENDPOINTS
 
 app.post('/push-subs', function (req, res) {
-  if (!auth) {
-    console.log('Error: Parse authentication failed');
-    res.send('Error: Parse authentication failed');
+  if (!db) {
+    console.log('Error: Firebase authentication failed');
+    res.send('Error: Firebase authentication failed');
     return;
   }
 
@@ -144,32 +143,26 @@ app.post('/push-subs', function (req, res) {
     registrationId = req.body.endpoint;
   }
 
-  var Subscription = Parse.Object.extend('Subscriptions');
-  var subscription = new Subscription();
-  var query = new Parse.Query(Subscription);
-  query.equalTo('registrationId', registrationId);
+  var ref = db.ref('subscriptions');
 
-  query.find({
-    success: function (results) {
-      if (!results.length) {
-        subscription.set('registrationId', registrationId);
+  ref.orderByChild('registrationId').equalTo(registrationId).once('value', function(data){
+    if (!data.numChildren()) {
+      var pushSubRef = ref.push();
 
-        subscription.save(null, {
-          success: function (data) {
-            res.send('New push notification registration ID created.');
-          },
-          error: function (data, error) {
-            console.log('ERROR: ' + error.code + ' ' + error.message);
-            res.send('ERROR: ' + error.code + ' ' + error.message);
+      pushSubRef.set(
+        {
+          registrationId: registrationId
+        }, function (err) {
+          if (err) {
+            console.log('error:', err);
+            res.send('ERROR: ' + err);
+          } else {
+            res.send('Subscribed to push notifications.');
           }
-        });
-      } else {
-        res.send('Push notification registration ID already saved.');
-      }
-    },
-    error: function (data, error) {
-      console.log('ERROR: ' + error.code + ' ' + error.message);
-      res.send('ERROR: ' + error.code + ' ' + error.message);
+        }
+      );
+    } else {
+      res.send('Push notification subscription found.');
     }
   });
 });
