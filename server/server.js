@@ -170,9 +170,9 @@ app.post('/push-subs', function (req, res) {
 // -- DISABLE PUSH NOTIFICATION ENDPOINT
 
 app.delete('/push-subs', function (req, res) {
-  if (!auth) {
-    console.log('Error: Parse authentication failed');
-    res.send('Error: Parse authentication failed');
+  if (!db) {
+    console.log('Error: Firebase authentication failed');
+    res.send('Error: Firebase authentication failed');
     return;
   }
 
@@ -185,39 +185,13 @@ app.delete('/push-subs', function (req, res) {
     registrationId = req.body.endpoint;
   }
 
-  var Subscription = Parse.Object.extend('Subscriptions');
-  var subscription = new Subscription();
-  var query = new Parse.Query(Subscription);
-  query.equalTo('registrationId', registrationId);
+  var ref = db.ref('subscriptions');
 
-  query.find({
-    success: function (results) {
-      if (results.length === 1) {
-        query.get(results[0].id, {
-          success: function (singleSub) {
-            singleSub.destroy({
-              success: function (data) {
-                res.send('Push notification registration ID DESTROYED!');
-              },
-              error: function (data, error) {
-                console.log('ERROR: ' + error.code + ' ' + error.message);
-                res.send('ERROR: ' + error.code + ' ' + error.message);
-              }
-            });
-          },
-          error: function (data, error) {
-            console.log('ERROR: ' + error.code + ' ' + error.message);
-            res.send('ERROR: ' + error.code + ' ' + error.message);
-          }
-        });
-      } else {
-        res.send('Push notification registration ID not fount.');
-      }
-    },
-    error: function (data, error) {
-      console.log('ERROR: ' + error.code + ' ' + error.message);
-      res.send('ERROR: ' + error.code + ' ' + error.message);
-    }
+  ref.orderByChild('registrationId').equalTo(registrationId).once('value', function(data){
+    data.forEach(function(obj){
+      ref.child(obj.key).remove();
+    });
+    res.send('Unsubscribed from push notifications.');
   });
 });
 
