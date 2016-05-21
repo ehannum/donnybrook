@@ -15,7 +15,7 @@ var db = null;
 
 if (fKey) {
   firebase.initializeApp({
-    serviceAccount: __dirname + '/firebase_cert.json',
+    serviceAccount: JSON.parse(fKey),
     databaseURL: 'https://donnybook-push.firebaseio.com/'
   });
 
