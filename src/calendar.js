@@ -19,6 +19,11 @@ $(function () {
   });
 
   var fuzzyScroll = function () {
+    // if the page is scrolled to an input field,
+    // ex: if the on-screen keyboard is open for typing
+    // then do not snap scroll
+    if ($('input').is(':focus')) return;
+
     var boxHeight = parseInt($('.para-box').css('height'));
     var scrollPos = $('.parallax').scrollTop();
 

@@ -257,8 +257,6 @@ var dispatchPushNotification = function (data) {
       console.log('Error:', err);
     });
 
-    console.log(JSON.stringify({registration_ids: ids}));
-
     postReq.write(JSON.stringify({registration_ids: ids}));
     postReq.end();
   });
