@@ -18,6 +18,8 @@ $(function () {
     $this.data('scrollTimeout', setTimeout(fuzzyScroll, 500));
   });
 
+  $.extend(jQuery.easing,{"ease-in-quad":function(x,t,b,c,d) { return c*(t/=d)*t + b; }})
+
   var fuzzyScroll = function () {
     // if the page is scrolled to an input field,
     // ex: if the on-screen keyboard is open for typing
@@ -29,12 +31,12 @@ $(function () {
 
     var distance = scrollPos % boxHeight;
     var nearest = Math.round(scrollPos / boxHeight);
-    var marginOfError = boxHeight / 8;
+    var marginOfError = boxHeight / 4; // ish
 
     if (distance < marginOfError || distance > boxHeight - marginOfError) {
       $('.parallax').animate({
         scrollTop: boxHeight * nearest
-      }, 250);
+      }, 250, "ease-in-quad");
     }
   };
 
