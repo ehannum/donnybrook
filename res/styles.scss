@@ -123,7 +123,7 @@ header {
     z-index: -1;
 
     .cabin {
-      transform: translateZ(-1px) scale(2);
+      // transform: translateZ(-1px) scale(2);
       position: absolute;
       top: 0;
       left: 0;
@@ -393,6 +393,8 @@ header {
 
       .message-input {
         flex-grow: 1;
+        line-height: 4em;
+        padding-left: 4px;
         width: 0; // overrides default min-width, actual width determined by flex-grow
         border: 2px solid black;
       }
