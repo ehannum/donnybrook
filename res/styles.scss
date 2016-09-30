@@ -395,6 +395,7 @@ header {
         flex-grow: 1;
         line-height: 4em;
         padding-left: 4px;
+        max-height: 60px;
         width: 0; // overrides default min-width, actual width determined by flex-grow
         border: 2px solid black;
       }
