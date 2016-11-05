@@ -51,6 +51,7 @@ $(function () {
 
           for (var i = 0; i < target.events.length; i++) {
             $('.event-details').append('<h2 class="name">' + target.events[i].description + '</h2>');
+            $('.event-details').append('<h3>' + target.events[i].reservation + '</h3>');
             if (target.events[i].comment) {
               $('.event-details').append('<h3 class="comment">' + target.events[i].comment + '</h3>');
             }
@@ -63,7 +64,7 @@ $(function () {
                 url: '/events/' + id,
                 success: function (response) {
                   console.log(response);
-                  alert('Trip successflly canceled :(\n\nSorry you couldn't make it. You can always reschedule!');
+                  alert('Trip successflly canceled :(\n\nSorry you couldn\'t make it. You can always reschedule!');
                   document.location.reload(true);
                 },
                 error: function (err) {
@@ -125,11 +126,12 @@ $(function () {
   var createTrip = function (start, end, name, comment, id) {
     var tripDates = [];
 
-    date = (new Date(start)).setUTCHours(8);
+    var date = (new Date(start)).setUTCHours(8);
     end = (new Date(end)).setUTCHours(8);
+    var reservation = moment(date).format('dddd, MMMM Do') + ' - ' + moment(end).format('dddd, MMMM Do');
 
     while (date <= end) {
-      tripDates.push({date: date, color: colors[0], description: name, comment: comment, id: id});
+      tripDates.push({date: date, color: colors[0], description: name, comment: comment, reservation: reservation, id: id});
 
       date = (new Date(date + 86400000)).getTime();
     }
@@ -169,8 +171,9 @@ $(function () {
         comment: comment
       },
       success: function (data) {
-        alert('You are now booked for the cabin from ' + moment(startDate).format('dddd, MMMM DD YYYY') + ' to ' + moment(endDate).format('dddd, MMMM DD YYYY') + '!');
-        createTrip(startDate, endDate, name, comment, data);
+        alert('You are now booked for the cabin from ' + moment(startDate).format('dddd, MMMM Do YYYY') + ' to ' + moment(endDate).format('dddd, MMMM Do YYYY') + '!');
+        var reservation = moment(startDate).format('dddd, MMMM Do') + ' - ' + moment(endDate).format('dddd, MMMM Do');
+        createTrip(startDate, endDate, name, comment, reservation, data);
       },
       error: function (error) {
         console.log(error);
