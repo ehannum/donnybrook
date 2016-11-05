@@ -45,6 +45,7 @@ app.post('/calendar', function (req, res) {
   var ref = db.ref('trips/2016');
 
   var tripRef = ref.push();
+  var tripId = tripRef.key;
 
   tripRef.set(
     {
@@ -58,7 +59,7 @@ app.post('/calendar', function (req, res) {
         res.send('ERROR: ' + err);
       } else {
         dispatchPushNotification();
-        res.send('Success!');
+        res.send(tripId);
       }
     }
   );
@@ -77,6 +78,27 @@ app.get('/events', function (req, res) {
 
   ref.once('value', function (data) {
     res.send(data.val());
+  });
+});
+
+// -- DELETE CALENDAR EVENT
+
+app.delete('/events/:eventId', function (req, res) {
+  if (!db) {
+    console.log('Error: Firebase authentication failed');
+    res.send('Error: Firebase authentication failed');
+    return;
+  }
+
+  var ref = db.ref('trips/2016');
+
+  ref.child(req.params.eventId).remove(function (err) {
+    if (err) {
+      console.log('error:', err);
+      res.send('ERROR: ' + err);
+    } else {
+      res.send('Successfully deleted!');
+    }
   });
 });
 

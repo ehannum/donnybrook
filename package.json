@@ -1,6 +1,6 @@
 {
   "name": "donnybrook",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "server/server.js",
   "scripts": {
     "postinstall": "grunt",
@@ -17,13 +17,13 @@
   },
   "homepage": "https://github.com/ehannum/donnybrook",
   "dependencies": {
-    "body-parser": "~1.13.2",
-    "express": "~4.13.0",
+    "body-parser": "~1.15.2",
+    "express": "~4.14.0",
     "firebase": "^3.0.1",
-    "grunt": "~0.4.5",
-    "grunt-cli": "~0.1.13",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-uglify": "~0.3.2",
+    "grunt": "~1.0.1",
+    "grunt-cli": "~1.2.0",
+    "grunt-contrib-concat": "~1.0.1",
+    "grunt-contrib-uglify": "~2.0.0",
     "grunt-sass": "^1.2.0"
   }
 }
