@@ -7,7 +7,7 @@ var https = require('https');
 var server = http.Server(app);
 var path = require('path');
 
-var firebase = require('firebase');
+var firebase = require('firebase-admin');
 var gKey = process.env.G_API_KEY || null;
 var fKey = process.env.FIREBASE_KEY || null;
 var db = null;
@@ -16,7 +16,7 @@ var db = null;
 
 if (fKey) {
   firebase.initializeApp({
-    serviceAccount: JSON.parse(fKey),
+    credential: firebase.credential.cert(JSON.parse(fKey)),
     databaseURL: 'https://donnybook-push.firebaseio.com/'
   });
 
